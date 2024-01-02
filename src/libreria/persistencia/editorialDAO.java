@@ -57,7 +57,7 @@ public class editorialDAO {
         desconectar();
         return editoriales;
     }
-    public Editorial buscarporTitulo(String nombre) throws Exception{
+    public Editorial buscarporNombre(String nombre) throws Exception{
         conectar();
         Editorial editorial = (Editorial) em.createQuery("SELECT e FROM Editorial e WHERE e.nombre LIKE :nombre").setParameter("nombre", nombre).getSingleResult();
         desconectar();
