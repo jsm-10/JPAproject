@@ -57,4 +57,10 @@ public class libroDAO {
         return libro;
         
     }
+    public Libro buscarporId (String id){
+        conectar();
+        Libro libro = (Libro) em.createQuery("SELECT l FROM Libro l WHERE l.id LIKE :id").setParameter("id", id).getSingleResult();
+        desconectar();
+        return libro;
+    }
 }

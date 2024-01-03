@@ -1,6 +1,8 @@
 
 package libreria.servicios;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 import libreria.entidades.Autor;
 import libreria.entidades.Editorial;
@@ -22,7 +24,26 @@ private final libroDAO DAO;
         this.autorservice = autorservice;
         this.editorialservice = editorialservice; 
     }
+    
+    public void existeLibro(String title) throws Exception{
+        try {
+            Collection <Libro> libros = DAO.listarTodos();
+            if(libros == null){
+                throw new Exception ("Error al traer la lista de Libros");
+            }else{
+                for (Libro x : libros) {
+                    if(x.getTitle().equalsIgnoreCase(title)){
+                        throw new Exception ("Error, ya exite el titulo en los registros");
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     public Libro crearLibro(String title, int year, int ejemplares) throws Exception{
+        existeLibro(title);
         Libro libro = new Libro();
         try {
             libro.setTitle(title);
@@ -52,4 +73,64 @@ private final libroDAO DAO;
             throw e;
         }
     }
-}
+    public Libro busquedaporISBN(String id) throws Exception{
+        try {
+            Libro libro = DAO.buscarporId(id);
+            return libro;
+            
+        } catch (Exception e) {
+            throw new Exception ("No se pudo buscar libro por ID");
+        }
+    }
+    public Libro busquedaporTitulo(String title) throws Exception{
+        try {
+            Libro libro = DAO.buscarporTitulo(title);
+            return libro;
+        } catch (Exception e) {
+            throw new Exception ("No se logro buscar libro por Titulo");
+        }
+    }
+    public Collection<Libro> busquedaporAutor(String nombre) throws Exception{
+        Collection <Libro> librosAutores = new ArrayList();
+        try {
+            Collection<Libro> libros = DAO.listarTodos();
+            if (libros == null) {
+                throw new Exception ("la lista de libros traida es incorrecta");
+            }else{
+                for (Libro x : libros) {
+                    if(x.getAutor().getNombre().equalsIgnoreCase(nombre)){
+                        librosAutores.add(x);
+                        System.out.println(x);
+                    }
+                    
+                }
+            }
+            return librosAutores;
+        } catch (Exception e) {
+            throw new Exception ("error en la busqueda por Autor");
+        }
+        }
+    public Collection<Libro> busquedaporEditorial (String nombre) throws Exception{
+        Collection <Libro> librosEditorial = new ArrayList();
+        try {
+            Collection<Libro> libros = DAO.listarTodos();
+            if (libros == null) {
+                throw new Exception ("la lista de libros traida es incorrecta");
+            }else{
+                for (Libro x : libros) {
+                    if(x.getEditorial().getNombre().equalsIgnoreCase(nombre)){
+                        librosEditorial.add(x);
+                        System.out.println(x);
+                    }
+                    
+                }
+            }
+            return librosEditorial;
+        } catch (Exception e) {
+            throw new Exception ("error en la busqueda por Editorial");
+        }
+    }
+    }
+    
+
+
