@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import libreria.entidades.Autor;
-import libreria.entidades.Libro;
 
 
 public class autorDAO {

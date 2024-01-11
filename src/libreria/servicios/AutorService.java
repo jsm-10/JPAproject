@@ -10,7 +10,7 @@ import libreria.persistencia.autorDAO;
 public class AutorService {
     private final autorDAO dao;
 
-    public AutorService(autorDAO dao) {
+    public AutorService() {
         this.dao = new autorDAO();
     }
     
@@ -35,6 +35,7 @@ public class AutorService {
             throw e;
         }
     }
+    
     public void eliminarAutor(String nombre){
         try {
             dao.conectar();
