@@ -51,10 +51,13 @@ public class autorDAO {
         return autores;
     }
     public Autor buscarporNombre(String nombre) throws Exception{
-        conectar();
-        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.title LIKE :nombre").setParameter("title", nombre).getSingleResult();
+        
+            conectar();
+        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.nombre LIKE :nombre").setParameter("nombre", nombre).getSingleResult();
         desconectar();
         return autor;
+       
+        
         
     }
 }

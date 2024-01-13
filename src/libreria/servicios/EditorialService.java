@@ -20,10 +20,18 @@ public class EditorialService {
     public EditorialService(editorialDAO dao) {
         this.dao = new editorialDAO();
     }
-        public Editorial crearEditorial(String nombre){
+        public Editorial crearEditorial(String nombre) throws Exception{
         Editorial editorial = new Editorial();
         Scanner sc = new Scanner(System.in);
         try {
+             if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("Error, el nombre de la editorial no puede estar vacio");
+             
+            }
+            if(buscarPornormbre(nombre).getNombre().equalsIgnoreCase(nombre)){
+                throw new Exception ("Error, el nombre de la editorial esta repetido");
+            }
+        
             editorial.setNombre(nombre);
             System.out.println("Indique V o F si quiere dar de alta al Autor");
             String resp = sc.next();

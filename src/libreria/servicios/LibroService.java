@@ -48,8 +48,13 @@ private final libroDAO DAO;
         try {
             libro.setTitle(title);
             if (title == null || title.trim().isEmpty()) {
-            throw new Exception("Error, el título del libro no puede estar vacío o nulo.");
+            throw new Exception("Error, el título del libro no puede estar vacio");
+             
             }
+            if(busquedaporTitulo(title).getTitle().equalsIgnoreCase(title)){
+                throw new Exception ("Error, el titulo del libro esta repetido");
+            }
+            libro.setTitle(title);
             libro.setYear(year);
             libro.setEjemplares(ejemplares);
             libro.setEjemplaresPrestados(0);
