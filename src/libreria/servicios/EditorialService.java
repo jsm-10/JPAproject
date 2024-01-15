@@ -17,7 +17,7 @@ public class EditorialService {
     
     private editorialDAO dao;
 
-    public EditorialService(editorialDAO dao) {
+    public EditorialService() {
         this.dao = new editorialDAO();
     }
         public Editorial crearEditorial(String nombre){
