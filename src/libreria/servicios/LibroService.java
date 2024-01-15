@@ -21,8 +21,8 @@ private final libroDAO DAO;
         this.DAO = new libroDAO();
     }
     public void setServicios(AutorService autorservice, EditorialService editorialservice){
-        this.autorservice = autorservice;
-        this.editorialservice = editorialservice; 
+        this.autorservice  = new AutorService();
+        this.editorialservice = new EditorialService();
     }
     
     public void existeLibro(String title) throws Exception{
@@ -43,7 +43,7 @@ private final libroDAO DAO;
         }
     }
     public Libro crearLibro(String title, int year, int ejemplares) throws Exception{
-        existeLibro(title);
+        setServicios(autorservice, editorialservice);
         Libro libro = new Libro();
         try {
             libro.setTitle(title);
@@ -51,7 +51,7 @@ private final libroDAO DAO;
             throw new Exception("Error, el título del libro no puede estar vacio");
              
             }
-            if(busquedaporTitulo(title).getTitle().equalsIgnoreCase(title)){
+            if(busquedaporTitulo(title) != null){
                 throw new Exception ("Error, el titulo del libro esta repetido");
             }
             libro.setTitle(title);
@@ -59,11 +59,18 @@ private final libroDAO DAO;
             libro.setEjemplares(ejemplares);
             libro.setEjemplaresPrestados(0);
             libro.setEjemplaresRestantes(ejemplares);
-            System.out.println("Indique el nombre del autor del libro");
+            
+            
+            
+            
             Scanner sc = new Scanner(System.in);
+            autorservice.listarAutores();
+            System.out.println("Indique el ID del autor del libro");
             String resp = sc.nextLine();
-            Autor autor = autorservice.buscarPornormbre(resp);
+            Autor autor = autorservice.busquedaporId(resp);
             libro.setAutor(autor);
+            
+            
             System.out.println("Indique el nombre de la editorial");
             resp = sc.nextLine();
             Editorial editorial = editorialservice.buscarPornormbre(resp);
@@ -92,7 +99,8 @@ private final libroDAO DAO;
             Libro libro = DAO.buscarporTitulo(title);
             return libro;
         } catch (Exception e) {
-            throw new Exception ("No se logro buscar libro por Titulo");
+            return null;
+            
         }
     }
     public Collection<Libro> busquedaporAutor(String nombre) throws Exception{

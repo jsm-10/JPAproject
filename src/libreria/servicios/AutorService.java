@@ -10,6 +10,7 @@ import libreria.persistencia.autorDAO;
 
 public class AutorService {
     private final autorDAO dao;
+    
 
     public AutorService() {
         this.dao = new autorDAO();
@@ -89,6 +90,9 @@ public class AutorService {
                 throw new Exception ("La lista confeccionada es incorrecta");
                 
             }else{
+                for (Autor autore : autores) {
+                    System.out.println(autore);
+                }
             return autores;
                         }
         } catch (Exception e) {
@@ -100,6 +104,15 @@ public class AutorService {
             return dao.buscarporNombre(nombre);
         } catch (NoResultException e) {
             return null;
+        }
+    }
+        public Autor busquedaporId(String id) throws Exception{
+        try {
+             Autor autor = dao.buscarporId(id);
+            return autor;
+            
+        } catch (Exception e) {
+            throw new Exception ("No se pudo buscar autor por ID");
         }
     }
 }

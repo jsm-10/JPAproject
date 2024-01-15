@@ -17,10 +17,15 @@ public class EditorialService {
     
     private editorialDAO dao;
 
-    public EditorialService(editorialDAO dao) {
+    public EditorialService() {
         this.dao = new editorialDAO();
     }
         public Editorial crearEditorial(String nombre) throws Exception{
+            Editorial editorialExistente = buscarPornormbre(nombre);
+
+    if (editorialExistente != null) {
+        throw new Exception("Error, ya existe un autor con el mismo nombre");
+    }
         Editorial editorial = new Editorial();
         Scanner sc = new Scanner(System.in);
         try {
@@ -28,12 +33,8 @@ public class EditorialService {
             throw new Exception("Error, el nombre de la editorial no puede estar vacio");
              
             }
-            if(buscarPornormbre(nombre).getNombre().equalsIgnoreCase(nombre)){
-                throw new Exception ("Error, el nombre de la editorial esta repetido");
-            }
-        
             editorial.setNombre(nombre);
-            System.out.println("Indique V o F si quiere dar de alta al Autor");
+            System.out.println("Indique V o F si quiere dar de alta a la editorial");
             String resp = sc.next();
             if (resp.equalsIgnoreCase("v") ) {
                 System.out.println("Se indico el Alta");
@@ -100,7 +101,7 @@ public class EditorialService {
         try {
             return dao.buscarporNombre(nombre);
         } catch (Exception e) {
-            throw e;
+            return null;
         }
     }
     

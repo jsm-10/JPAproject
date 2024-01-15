@@ -60,4 +60,10 @@ public class autorDAO {
         
         
     }
+    public Autor buscarporId (String id){
+        conectar();
+        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
+        desconectar();
+        return autor;
+    }
 }
