@@ -20,12 +20,21 @@ public class EditorialService {
     public EditorialService() {
         this.dao = new editorialDAO();
     }
-        public Editorial crearEditorial(String nombre){
+        public Editorial crearEditorial(String nombre) throws Exception{
+            Editorial editorialExistente = buscarPornormbre(nombre);
+
+    if (editorialExistente != null) {
+        throw new Exception("Error, ya existe un autor con el mismo nombre");
+    }
         Editorial editorial = new Editorial();
         Scanner sc = new Scanner(System.in);
         try {
+             if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("Error, el nombre de la editorial no puede estar vacio");
+             
+            }
             editorial.setNombre(nombre);
-            System.out.println("Indique V o F si quiere dar de alta al Autor");
+            System.out.println("Indique V o F si quiere dar de alta a la editorial");
             String resp = sc.next();
             if (resp.equalsIgnoreCase("v") ) {
                 System.out.println("Se indico el Alta");
@@ -82,8 +91,11 @@ public class EditorialService {
                 throw new Exception ("La lista confeccionada es incorrecta");
                 
             }else{
+                for (Editorial edito : editoriales) {
+                    System.out.println(edito);
+                }
             return editoriales;
-            }
+                        }
         } catch (Exception e) {
             throw e;
         }
@@ -92,7 +104,16 @@ public class EditorialService {
         try {
             return dao.buscarporNombre(nombre);
         } catch (Exception e) {
-            throw e;
+            return null;
+        }
+    }
+    public Editorial busquedaporId(String id) throws Exception{
+        try {
+             Editorial editorial = dao.buscarporId(id);
+            return editorial;
+            
+        } catch (Exception e) {
+            throw new Exception ("No se pudo buscar editorial por ID");
         }
     }
     
