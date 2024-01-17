@@ -62,7 +62,7 @@ private final libroDAO DAO;
             
             
             
-            
+            System.out.println("------------------------------------------------------");
             Scanner sc = new Scanner(System.in);
             autorservice.listarAutores();
             System.out.println("Indique el ID del autor del libro");
@@ -70,10 +70,11 @@ private final libroDAO DAO;
             Autor autor = autorservice.busquedaporId(resp);
             libro.setAutor(autor);
             
-            
-            System.out.println("Indique el nombre de la editorial");
+            System.out.println("------------------------------------------------------");
+            editorialservice.listarEditoriales();
+            System.out.println("Indique el ID de la editorial");
             resp = sc.nextLine();
-            Editorial editorial = editorialservice.buscarPornormbre(resp);
+            Editorial editorial = editorialservice.busquedaporId(resp);
             libro.setEditorial(editorial);
             if (autor != null && editorial != null){
                 DAO.guardar(libro);

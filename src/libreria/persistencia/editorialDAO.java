@@ -51,9 +51,9 @@ public class editorialDAO {
         em.getTransaction().commit();
         desconectar();
     }
-    public List<Editorial> listarTodos() throws Exception {
+    public List <Editorial> listarTodos(){
         conectar();
-        List<Editorial> editoriales = em.createQuery("SELECT e FROM Editoriales e").getResultList();
+        List <Editorial> editoriales = em.createQuery("SELECT e FROM Editorial e").getResultList();
         desconectar();
         return editoriales;
     }
@@ -63,5 +63,11 @@ public class editorialDAO {
         desconectar();
         return editorial;
         
+    }
+     public Editorial buscarporId (String id){
+        conectar();
+        Editorial editorial = (Editorial) em.createQuery("SELECT e FROM Editorial e WHERE e.id LIKE :id").setParameter("id", id).getSingleResult();
+        desconectar();
+        return editorial;
     }
 }

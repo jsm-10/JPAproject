@@ -91,8 +91,11 @@ public class EditorialService {
                 throw new Exception ("La lista confeccionada es incorrecta");
                 
             }else{
+                for (Editorial edito : editoriales) {
+                    System.out.println(edito);
+                }
             return editoriales;
-            }
+                        }
         } catch (Exception e) {
             throw e;
         }
@@ -102,6 +105,15 @@ public class EditorialService {
             return dao.buscarporNombre(nombre);
         } catch (Exception e) {
             return null;
+        }
+    }
+    public Editorial busquedaporId(String id) throws Exception{
+        try {
+             Editorial editorial = dao.buscarporId(id);
+            return editorial;
+            
+        } catch (Exception e) {
+            throw new Exception ("No se pudo buscar editorial por ID");
         }
     }
     

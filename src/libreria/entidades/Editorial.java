@@ -1,7 +1,7 @@
 
 package libreria.entidades;
 
-import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -74,10 +74,9 @@ public class Editorial{
         }
         return true;
     }
-
     @Override
     public String toString() {
-        return "libreria.entidades.Editorial[ id=" + id + " ]";
+        return "Editorial{" + "id=" + id + ", nombre=" + nombre + ", alta=" + alta + '}';
     }
-    
+       
 }
