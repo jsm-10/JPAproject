@@ -44,16 +44,16 @@ private final libroDAO DAO;
     }
     public Libro crearLibro(String title, int year, int ejemplares) throws Exception{
         setServicios(autorservice, editorialservice);
-        Libro libro = new Libro();
+         Libro libroExistente = busquedaporTitulo(title);
         try {
-            libro.setTitle(title);
             if (title == null || title.trim().isEmpty()) {
             throw new Exception("Error, el título del libro no puede estar vacio");
              
             }
-            if(busquedaporTitulo(title) != null){
+            if(libroExistente != null){
                 throw new Exception ("Error, el titulo del libro esta repetido");
             }
+            Libro libro = new Libro();
             libro.setTitle(title);
             libro.setYear(year);
             libro.setEjemplares(ejemplares);

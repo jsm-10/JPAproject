@@ -63,19 +63,18 @@ public class EditorialService {
             throw e;
         }
     }
-    public Editorial editarAltaoBaja(String nombre) throws Exception{
+    public Editorial editarAltaoBaja(String id) throws Exception{
         try {
-            Editorial editorial = dao.buscarporNombre(nombre);
+            Editorial editorial = dao.buscarporId(id);
              if (editorial == null) {
-                throw new Exception ("No se consigno un objeto corrrecto");
-            }else{
+                throw new Exception ("No se consigno un objeto correcto");
+            }
                  System.out.println("Se cambia el alta o baja");
                  if(editorial.isAlta() == true){
                      editorial.setAlta(false);
                  }else{
                      editorial.setAlta(true);
                  }
-             }
              System.out.println("El estado actual de Alta o Baja es: " + editorial.isAlta());
              dao.editar(editorial);
              return editorial;

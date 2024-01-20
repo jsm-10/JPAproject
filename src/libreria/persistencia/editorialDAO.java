@@ -65,9 +65,13 @@ public class editorialDAO {
         
     }
      public Editorial buscarporId (String id){
+        try{
         conectar();
         Editorial editorial = (Editorial) em.createQuery("SELECT e FROM Editorial e WHERE e.id LIKE :id").setParameter("id", id).getSingleResult();
         desconectar();
         return editorial;
+    }catch(Exception ex){
+    return null;    
+    }
     }
 }

@@ -51,11 +51,15 @@ public class libroDAO {
         return libros;
     }
     public Libro buscarporTitulo(String title) throws Exception{
+    try{
         conectar();
-        Libro libro = (Libro) em.createQuery("SELECT l FROM Libro l WHERE l.title LIKE :nombre").setParameter("title", title).getSingleResult();
+    
+        Libro libro = (Libro) em.createQuery("SELECT l FROM Libro l WHERE l.title LIKE :title").setParameter("title", title).getSingleResult();
         desconectar();
         return libro;
-        
+    }catch(Exception ex){
+    return null;    
+    }
     }
     public Libro buscarporId (String id){
         conectar();
