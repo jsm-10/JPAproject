@@ -52,10 +52,11 @@ public class Libreria {
             case 1: System.out.println("Cambiar el alta de una editorial");
                 try {
                     es.editarAltaoBaja("151");
-                    break;
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
             }
+                break;
             case 2: System.out.println("saliendo del programa");
         }
     
