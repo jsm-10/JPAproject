@@ -51,7 +51,10 @@ public class Libreria {
         switch(opcion){
             case 1: System.out.println("Cambiar el alta de una editorial");
                 try {
-                    es.editarAltaoBaja("151");
+                    es.listarEditoriales();
+                    System.out.println("Seleccione el Id de la editorial a editar");
+                    String id = sc.next();
+                    es.editarAltaoBaja(id);
                     
                 } catch (Exception e) {
                     e.printStackTrace();

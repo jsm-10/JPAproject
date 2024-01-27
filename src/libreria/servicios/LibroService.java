@@ -45,14 +45,19 @@ private final libroDAO DAO;
     public Libro crearLibro(String title, int year, int ejemplares) throws Exception{
         setServicios(autorservice, editorialservice);
          Libro libroExistente = busquedaporTitulo(title);
-        try {
-            if (title == null || title.trim().isEmpty()) {
-            throw new Exception("Error, el título del libro no puede estar vacio");
+        try {          
+                if (title == null || title.trim().isEmpty()) {
+                    System.out.println("Titulo vacio");
+                    return null;
              
             }
             if(libroExistente != null){
-                throw new Exception ("Error, el titulo del libro esta repetido");
+                
+                System.out.println("Titulo repetido");
+                return null;
             }
+            
+            
             Libro libro = new Libro();
             libro.setTitle(title);
             libro.setYear(year);
@@ -86,6 +91,7 @@ private final libroDAO DAO;
             throw e;
         }
     }
+    
     public Libro busquedaporISBN(String id) throws Exception{
         try {
             Libro libro = DAO.buscarporId(id);
@@ -143,6 +149,10 @@ private final libroDAO DAO;
         } catch (Exception e) {
             throw new Exception ("error en la busqueda por Editorial");
         }
+    }
+
+    private Exception Exception(String titulo_repetido) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     }
     
