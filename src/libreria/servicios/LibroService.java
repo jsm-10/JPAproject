@@ -150,10 +150,22 @@ private final libroDAO DAO;
             throw new Exception ("error en la busqueda por Editorial");
         }
     }
+    public Libro editarEjemplares(Libro libro) throws Exception{
+        try {
+            if (libro.getEjemplaresRestantes() > 0) {
+            libro.setEjemplaresPrestados(libro.getEjemplaresPrestados() + 1); 
+        }else{
+            System.out.println("No tenemos libros de ese titulo para prestar");
+            return null;
+        }
+        DAO.editar(libro);
+        return libro;
+        } catch (Exception e) {
+            throw e;
+        }
+        }
+    
 
-    private Exception Exception(String titulo_repetido) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     }
     
 

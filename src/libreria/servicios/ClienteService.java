@@ -20,16 +20,27 @@ public class ClienteService {
     }
     public Cliente crearCliente (long documento, String nombre, String apellido, String telefono ) throws Exception{
         Cliente xDni = buscarporDNI(documento);
+        Cliente xCel = busquedaporTel(telefono);
         try {
             if(nombre == null || nombre.trim().isEmpty()){
                 System.out.println("Error, nombre invalido o inexistente");
                 return null;
             }
+            if(xDni != null){
+                System.out.println("Error, DNI utilizado");
+                return null;
+            }
+            if(xCel != null){
+                System.out.println("Error, Celular utilizado");
+            }
+            
             Cliente cliente = new Cliente();
             cliente.setDocumento(documento);
             cliente.setNombre(nombre);
             cliente.setApellido(apellido);
             cliente.setTelefono(telefono);
+            dao.guardar(cliente);
+            System.out.println("Cliente Creado");
             dao.guardar(cliente);
             return cliente;
         } catch (Exception e) {
@@ -58,7 +69,6 @@ public class ClienteService {
        try {
            return dao.buscarporDNI(documento);
        } catch (Exception e) {
-           System.out.println("Error al buscar el DNI");
            return null;
            
        }
@@ -67,7 +77,6 @@ public class ClienteService {
        try {
            return dao.buscarporCel(telefono);
        } catch (Exception e) {
-           System.out.println("Error al buscar por TEL");
            return null;
        }
    }

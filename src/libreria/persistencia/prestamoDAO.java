@@ -8,15 +8,20 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import libreria.entidades.Cliente;
+import libreria.entidades.Prestamo;
+
 
 /**
  *
  * @author juans
  */
-public class clienteDAO {
-     private final EntityManagerFactory EMF = Persistence.createEntityManagerFactory("libreriaPU");
+public class prestamoDAO {
+    private final EntityManagerFactory EMF = Persistence.createEntityManagerFactory("libreriaPU");
     private EntityManager em= EMF.createEntityManager();
+
+    public prestamoDAO() {
+    }
+    
     
     public void conectar(){
         if(!em.isOpen()){
@@ -29,53 +34,43 @@ public class clienteDAO {
             em.close();
         }
     }
-    public void guardar (Cliente cliente){
+    public void guardar (Prestamo prestamo){
         conectar();
         em.getTransaction().begin();
-        em.persist(cliente);
+        em.persist(prestamo);
         em.getTransaction().commit();
         desconectar();
     }
-    public void eliminar (Cliente cliente){
+    public void eliminar (Prestamo prestamo){
         conectar();
         em.getTransaction().begin();
-        em.remove(cliente);
+        em.remove(prestamo);
         em.getTransaction().commit();
         desconectar();
     }
-    public void editar (Cliente cliente){
+    public void editar (Prestamo prestamo){
         conectar();
         em.getTransaction().begin();
-        em.merge(cliente);
+        em.merge(prestamo);
         em.getTransaction().commit();
         desconectar();
     }
-    public List <Cliente> listarTodos(){
+    public List <Prestamo> listarTodos(){
         conectar();
-        List<Cliente> clientes = em.createQuery("SELECT c FROM Cliente c").getResultList();
+        List<Prestamo> clientes = em.createQuery("SELECT p FROM Prestamo p").getResultList();
         desconectar();
         return clientes;
     }
-    public Cliente buscarporDNI(long documento) throws Exception{
+    public Prestamo buscarprestamosDNI(long documento) throws Exception{
         try {
             conectar();
-            Cliente cliente = (Cliente) em.createQuery("SELECT c FROM Cliente c WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
+            Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
             desconectar();
-            return cliente;
+            return prestamo;
         } catch (Exception e) {
             e.printStackTrace();
         return null;
         }
     }
-    public Cliente buscarporCel (String telefono) throws Exception{
-        try {
-            conectar();
-            Cliente cliente = (Cliente) em.createQuery("SELECT c FROM Cliente c WHERE c.telefono LIKE :telefono").setParameter("telefono", telefono).getSingleResult();
-            desconectar();
-            return cliente;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+  
 }

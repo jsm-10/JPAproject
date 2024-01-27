@@ -1,10 +1,13 @@
 
 package libreria;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import libreria.servicios.AutorService;
+import libreria.servicios.ClienteService;
 import libreria.servicios.EditorialService;
 import libreria.servicios.LibroService;
+import libreria.servicios.PrestamoService;
 
 public class Libreria {
 
@@ -13,7 +16,10 @@ public class Libreria {
         AutorService as = new AutorService();
         EditorialService es = new EditorialService();
         LibroService lb = new LibroService();
+        ClienteService cs = new ClienteService();
+        PrestamoService ps = new PrestamoService();
         Scanner sc = new Scanner(System.in);
+        
         
         
 //        try {
@@ -44,8 +50,10 @@ public class Libreria {
              
             System.out.println("Elija una opcion del menu");
             System.out.println("Menu");
-            System.out.println("1. modificar el alta de la editorial");
-            System.out.println("2. salir");
+            System.out.println("1. Modificar el alta de la editorial");
+            System.out.println("2. Crear Cliente");
+            System.out.println("3. Dar en prestamo un libro");
+            System.out.println("4. Salir");
                opcion = sc.nextInt();
             
         switch(opcion){
@@ -58,13 +66,35 @@ public class Libreria {
                     
                 } catch (Exception e) {
                     e.printStackTrace();
-            }
+            }    
                 break;
-            case 2: System.out.println("saliendo del programa");
+            case 2: System.out.println("Creando un Cliente nuevo");
+                try {
+                System.out.println("----------------------------------------------------");
+                System.out.println("Indique su nombre");
+                String nombre = sc.next();
+                System.out.println("Indique su apellido");
+                String apellido = sc.next();
+                System.out.println("Indique su numero de documento sin puntos");
+                long documento = sc.nextLong();
+                System.out.println("Indique numero de telefono");
+                String telefono = sc.next();
+                System.out.println("----------------------------------------------------");
+                cs.crearCliente(documento, nombre, apellido, telefono);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            break;
+            case 3: System.out.println("Configurar un prestamo");
+                
+                System.out.println("-----------------------------------------------------");
+                System.out.println("Indique su numero de documento");
+                long documento = sc.nextLong();
+                 ps.crearPrestamo(documento); 
+            case 4: System.out.println("saliendo del programa");
+            break;
         }
-    
-        
-        }while (opcion != 2);
+        }while (opcion != 4);
     sc.close();
 }
 }
