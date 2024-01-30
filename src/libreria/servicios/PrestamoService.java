@@ -33,7 +33,12 @@ public class PrestamoService {
         System.out.println("Indique nombre del libro");
         String nombreLibro = sc.nextLine();
         System.out.println(nombreLibro);
+        
         try {
+           if(verif(documento, nombreLibro)){
+               System.out.println("Ya fue prestado ese libro a ese cliente");
+               return null;
+           }
            Libro libroprestamo = libroservice.busquedaporTitulo(nombreLibro);
            if(libroprestamo == null){
                System.out.println("Libro a prestar no encontrado");
@@ -55,7 +60,27 @@ public class PrestamoService {
             throw e;
         }
         
-        
-        
+       
+           
+       } 
+      public Prestamo buscarPrestamo(long documento){
+          try {
+              return dao.buscarprestamosDNI(documento);
+          } catch (Exception e) {
+              return null;
+          }
     }
+      public boolean verif(long documento, String titulo){
+          boolean vbl = true;
+          if(buscarPrestamo(documento) != null){
+              vbl = true;
+          }else{
+              vbl = false;
+          }if (buscarPrestamo(documento).getLibro().getTitle().equalsIgnoreCase(titulo)){
+              vbl = true;
+          }else{
+              vbl = false;
+          }
+          return vbl;
+      }
 }

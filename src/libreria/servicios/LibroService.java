@@ -3,10 +3,12 @@ package libreria.servicios;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 import libreria.entidades.Autor;
 import libreria.entidades.Editorial;
 import libreria.entidades.Libro;
+import libreria.entidades.Prestamo;
 import libreria.persistencia.libroDAO;
 
 
@@ -14,15 +16,17 @@ import libreria.persistencia.libroDAO;
 public class LibroService {
 private AutorService autorservice;
 private EditorialService editorialservice;
+private PrestamoService prestamoservice;
 private final libroDAO DAO;
 
 
     public LibroService() {
         this.DAO = new libroDAO();
     }
-    public void setServicios(AutorService autorservice, EditorialService editorialservice){
+    public void setServicios(AutorService autorservice, EditorialService editorialservice, PrestamoService prestamoservice){
         this.autorservice  = new AutorService();
         this.editorialservice = new EditorialService();
+        this.prestamoservice = new PrestamoService();
     }
     
     public void existeLibro(String title) throws Exception{
@@ -43,7 +47,7 @@ private final libroDAO DAO;
         }
     }
     public Libro crearLibro(String title, int year, int ejemplares) throws Exception{
-        setServicios(autorservice, editorialservice);
+        setServicios(autorservice, editorialservice, prestamoservice);
          Libro libroExistente = busquedaporTitulo(title);
         try {          
                 if (title == null || title.trim().isEmpty()) {
@@ -163,9 +167,50 @@ private final libroDAO DAO;
         } catch (Exception e) {
             throw e;
         }
+    }
+    public Collection <Libro> ListadePrestamos(long documento){
+        try {
+            Collection <Libro> libros = DAO.buscarListadePrestamos(documento);
+            if(libros == null){
+                System.out.println("Lista invalida");
+                return null;
+            }
+            for (Libro libro : libros) {
+                System.out.println("libro");
+                System.out.println("------------------------------------------------------------");
+            }
+            return libros;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-    
-
+    }
+    public Libro devolucionEjemplar(long documento){
+        setServicios(autorservice, editorialservice, prestamoservice);
+        try {
+            Collection <Libro> libros = ListadePrestamos(documento);
+            if(libros == null){
+                System.out.println("Lista Inexistente o incorrecta");
+                return null;
+            }
+        
+         System.out.println("Seleccione el titulo que desea devolver: "); 
+         Scanner sc = new Scanner (System.in);
+         String resp = sc.next();
+         Libro libro = busquedaporTitulo(resp);
+            if(libro.getEjemplaresPrestados() > 0){
+                libro.setEjemplaresPrestados(-1);
+            }else{
+                System.out.println("Ese libro no fue prestado");
+            }
+            DAO.guardar(libro);
+            return libro;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
     }
     
 

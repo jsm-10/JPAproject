@@ -91,10 +91,13 @@ public class Libreria {
                 System.out.println("Indique su numero de documento");
                 long documento = sc.nextLong();
                  ps.crearPrestamo(documento); 
-            case 4: System.out.println("saliendo del programa");
+                 break;
+            case 4: System.out.println("Configurar una devolucion");
+            
+            case 5: System.out.println("saliendo del programa");
             break;
         }
-        }while (opcion != 4);
+        }while (opcion != 5);
     sc.close();
 }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import libreria.entidades.Libro;
 import libreria.entidades.Prestamo;
 
 
@@ -57,14 +58,14 @@ public class prestamoDAO {
     }
     public List <Prestamo> listarTodos(){
         conectar();
-        List<Prestamo> clientes = em.createQuery("SELECT p FROM Prestamo p").getResultList();
+        List<Prestamo> prestamos = em.createQuery("SELECT p FROM Prestamo p").getResultList();
         desconectar();
-        return clientes;
+        return prestamos;
     }
     public Prestamo buscarprestamosDNI(long documento) throws Exception{
         try {
             conectar();
-            Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
+            Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p JOIN p.cliente c WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
             desconectar();
             return prestamo;
         } catch (Exception e) {
@@ -72,5 +73,6 @@ public class prestamoDAO {
         return null;
         }
     }
+     
   
 }
