@@ -7,6 +7,7 @@ package libreria.persistencia;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import libreria.entidades.Cliente;
 
@@ -62,8 +63,8 @@ public class clienteDAO {
             Cliente cliente = (Cliente) em.createQuery("SELECT c FROM Cliente c WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
             desconectar();
             return cliente;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NoResultException e) {
+            System.out.println("No hubo resultado");
         return null;
         }
     }
@@ -73,8 +74,8 @@ public class clienteDAO {
             Cliente cliente = (Cliente) em.createQuery("SELECT c FROM Cliente c WHERE c.telefono LIKE :telefono").setParameter("telefono", telefono).getSingleResult();
             desconectar();
             return cliente;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NoResultException e) {
+            System.out.println("No hubo resultado");
             return null;
         }
     }

@@ -7,6 +7,7 @@ package libreria.persistencia;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import libreria.entidades.Libro;
 import libreria.entidades.Prestamo;
@@ -68,9 +69,11 @@ public class prestamoDAO {
             Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p JOIN p.cliente c WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
             desconectar();
             return prestamo;
-        } catch (Exception e) {
-            e.printStackTrace();
-        return null;
+        } catch (NoResultException e) {
+            System.out.println("Prestamos no encontrados");  
+            return null;
+            
+        
         }
     }
      

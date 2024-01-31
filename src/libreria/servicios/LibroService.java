@@ -200,6 +200,7 @@ private final libroDAO DAO;
          Libro libro = busquedaporTitulo(resp);
             if(libro.getEjemplaresPrestados() > 0){
                 libro.setEjemplaresPrestados(-1);
+                System.out.println("Libro devuelto");
             }else{
                 System.out.println("Ese libro no fue prestado");
             }

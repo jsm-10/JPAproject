@@ -71,15 +71,14 @@ public class PrestamoService {
           }
     }
       public boolean verif(long documento, String titulo){
-          boolean vbl = true;
+          boolean vbl = false;
           if(buscarPrestamo(documento) != null){
               vbl = true;
           }else{
-              vbl = false;
-          }if (buscarPrestamo(documento).getLibro().getTitle().equalsIgnoreCase(titulo)){
+              return vbl;
+          }
+          if (buscarPrestamo(documento).getLibro().getTitle().equalsIgnoreCase(titulo) ){
               vbl = true;
-          }else{
-              vbl = false;
           }
           return vbl;
       }

@@ -53,7 +53,9 @@ public class Libreria {
             System.out.println("1. Modificar el alta de la editorial");
             System.out.println("2. Crear Cliente");
             System.out.println("3. Dar en prestamo un libro");
-            System.out.println("4. Salir");
+            System.out.println("4. Devolver un libro");
+            System.out.println("5. Listar prestamos de cliente");
+            System.out.println("6. Salir");
                opcion = sc.nextInt();
             
         switch(opcion){
@@ -88,16 +90,23 @@ public class Libreria {
             case 3: System.out.println("Configurar un prestamo");
                 
                 System.out.println("-----------------------------------------------------");
-                System.out.println("Indique su numero de documento");
+                System.out.println("Indique numero de DNI");
                 long documento = sc.nextLong();
                  ps.crearPrestamo(documento); 
                  break;
             case 4: System.out.println("Configurar una devolucion");
-            
-            case 5: System.out.println("saliendo del programa");
+                System.out.println("Ingrese DNI del cliente");
+                long dni = sc.nextLong();
+                lb.devolucionEjemplar(dni);
+                break;
+            case 5: System.out.println("Lista de libros prestados");
+                System.out.println("Seleccione el DNI del cliente");
+                long respuesta = sc.nextLong();
+                lb.ListadePrestamos(respuesta);
             break;
+            case 6: System.out.println("Saliendo");
         }
-        }while (opcion != 5);
+        }while (opcion != 6);
     sc.close();
 }
 }
