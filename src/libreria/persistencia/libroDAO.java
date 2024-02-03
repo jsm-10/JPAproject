@@ -4,6 +4,7 @@ package libreria.persistencia;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import libreria.entidades.Libro;
 
@@ -37,13 +38,13 @@ public class libroDAO {
         em.getTransaction().commit();
         desconectar();
     }
-    public void editar(Libro libro){
-        conectar();
-        em.getTransaction().begin();
-        em.merge(libro);
-        em.getTransaction().commit();
-        desconectar();
-    }
+    public void merge(Libro libro) {
+    conectar();
+    em.getTransaction().begin();
+    em.merge(libro);
+    em.getTransaction().commit();
+    desconectar();
+}
     public List<Libro> listarTodos() throws Exception {
         conectar();
         List<Libro> libros = em.createQuery("SELECT l FROM Libro l").getResultList();
@@ -53,7 +54,6 @@ public class libroDAO {
     public Libro buscarporTitulo(String title) throws Exception{
     try{
         conectar();
-    
         Libro libro = (Libro) em.createQuery("SELECT l FROM Libro l WHERE l.title LIKE :title").setParameter("title", title).getSingleResult();
         desconectar();
         return libro;
@@ -67,15 +67,5 @@ public class libroDAO {
         desconectar();
         return libro;
     }
-    public List <Libro> buscarListadePrestamos(long documento) throws Exception{
-        try {
-            conectar();
-            List <Libro> libros = em.createQuery("SELECT p.libro.title FROM Prestamo p JOIN p.cliente c WHERE c.documento = :documento").setParameter("documento", documento).getResultList();
-            desconectar();
-            return libros;
-        } catch (Exception e) {
-            e.printStackTrace();
-        return null;
-        }
-    }
+   
 }

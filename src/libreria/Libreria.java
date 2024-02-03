@@ -41,11 +41,11 @@ public class Libreria {
 //        }
         try {
             lb.crearLibro("Nunca te pares", 2015, 300);
+            lb.crearLibro("Jeff Besos", 2018, 100);
         } catch (Exception e) {
             e.printStackTrace();
         }
         int opcion;
-       
         do{
              
             System.out.println("Elija una opcion del menu");
@@ -97,12 +97,12 @@ public class Libreria {
             case 4: System.out.println("Configurar una devolucion");
                 System.out.println("Ingrese DNI del cliente");
                 long dni = sc.nextLong();
-                lb.devolucionEjemplar(dni);
+                ps.devolucionEjemplar(dni);
                 break;
             case 5: System.out.println("Lista de libros prestados");
                 System.out.println("Seleccione el DNI del cliente");
                 long respuesta = sc.nextLong();
-                lb.ListadePrestamos(respuesta);
+                ps.buscarPrestamo(respuesta);
             break;
             case 6: System.out.println("Saliendo");
         }

@@ -28,7 +28,7 @@ public class Libro {
     int year;
     int ejemplares;
     int ejemplaresPrestados;
-    int ejemplaresRestantes;
+    int ejemplaresRestantes = ejemplares - ejemplaresPrestados;
     @ManyToOne
     Autor autor;
     @ManyToOne

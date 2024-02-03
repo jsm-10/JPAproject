@@ -45,6 +45,9 @@ public class prestamoDAO {
     }
     public void eliminar (Prestamo prestamo){
         conectar();
+        if(!em.contains(prestamo)){
+                       prestamo = em.merge(prestamo);
+                   }
         em.getTransaction().begin();
         em.remove(prestamo);
         em.getTransaction().commit();
@@ -63,12 +66,13 @@ public class prestamoDAO {
         desconectar();
         return prestamos;
     }
-    public Prestamo buscarprestamosDNI(long documento) throws Exception{
+    public List<Prestamo> buscarprestamosDNI(long documento) throws Exception{
         try {
             conectar();
-            Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p JOIN p.cliente c WHERE c.documento = :documento").setParameter("documento", documento).getSingleResult();
+            List<Prestamo> prestamos = em.createQuery("SELECT p FROM Prestamo p JOIN p.cliente c WHERE c.documento = :documento").setParameter("documento", documento).getResultList();
+            
             desconectar();
-            return prestamo;
+            return prestamos;
         } catch (NoResultException e) {
             System.out.println("Prestamos no encontrados");  
             return null;
@@ -76,6 +80,13 @@ public class prestamoDAO {
         
         }
     }
+     public Prestamo buscarporId (String id){
+        conectar();
+        Prestamo prestamo = (Prestamo) em.createQuery("SELECT p FROM Prestamo p WHERE p.id LIKE :id").setParameter("id", id).getSingleResult();
+        desconectar();
+        return prestamo;
+    }
+   
      
   
 }

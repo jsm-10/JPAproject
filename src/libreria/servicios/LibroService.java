@@ -110,6 +110,7 @@ private final libroDAO DAO;
             Libro libro = DAO.buscarporTitulo(title);
             return libro;
         } catch (Exception e) {
+            System.out.println("Libro no encontrado");
             return null;
             
         }
@@ -158,60 +159,38 @@ private final libroDAO DAO;
         try {
             if (libro.getEjemplaresRestantes() > 0) {
             libro.setEjemplaresPrestados(libro.getEjemplaresPrestados() + 1); 
+            libro.setEjemplares(libro.getEjemplares()-1);
+            libro.setEjemplaresRestantes(libro.getEjemplaresRestantes()-1);
         }else{
             System.out.println("No tenemos libros de ese titulo para prestar");
             return null;
         }
-        DAO.editar(libro);
+        DAO.merge(libro);
         return libro;
         } catch (Exception e) {
             throw e;
         }
     }
-    public Collection <Libro> ListadePrestamos(long documento){
+    public void eliminarlibro(String title){
         try {
-            Collection <Libro> libros = DAO.buscarListadePrestamos(documento);
-            if(libros == null){
-                System.out.println("Lista invalida");
-                return null;
-            }
-            for (Libro libro : libros) {
-                System.out.println("libro");
-                System.out.println("------------------------------------------------------------");
-            }
-            return libros;
+            Libro libro = busquedaporTitulo(title);
+            DAO.merge(libro);
+            DAO.eliminar(libro);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            
         }
     }
-    public Libro devolucionEjemplar(long documento){
-        setServicios(autorservice, editorialservice, prestamoservice);
+    public void guardarCambios(Libro libro){
         try {
-            Collection <Libro> libros = ListadePrestamos(documento);
-            if(libros == null){
-                System.out.println("Lista Inexistente o incorrecta");
-                return null;
-            }
-        
-         System.out.println("Seleccione el titulo que desea devolver: "); 
-         Scanner sc = new Scanner (System.in);
-         String resp = sc.next();
-         Libro libro = busquedaporTitulo(resp);
-            if(libro.getEjemplaresPrestados() > 0){
-                libro.setEjemplaresPrestados(-1);
-                System.out.println("Libro devuelto");
-            }else{
-                System.out.println("Ese libro no fue prestado");
-            }
-            DAO.guardar(libro);
-            return libro;
+            DAO.merge(libro);
+            System.out.println("libro guardado");
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            System.out.println("Error al guardar");
+            throw e;
         }
-        
     }
+    
     }
     
 

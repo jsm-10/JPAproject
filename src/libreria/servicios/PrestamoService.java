@@ -4,7 +4,10 @@
  */
 package libreria.servicios;
 
+import java.util.List;
 import java.util.Scanner;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import libreria.entidades.Cliente;
 import libreria.entidades.Libro;
 import libreria.entidades.Prestamo;
@@ -19,6 +22,7 @@ public class PrestamoService {
     private prestamoDAO dao;
     private LibroService libroservice;
     private ClienteService clienteservice;
+    private EntityManager em;
 
     public PrestamoService() {
         this.dao = new prestamoDAO();
@@ -35,7 +39,7 @@ public class PrestamoService {
         System.out.println(nombreLibro);
         
         try {
-           if(verif(documento, nombreLibro)){
+           if(verif(documento, nombreLibro) == 2){
                System.out.println("Ya fue prestado ese libro a ese cliente");
                return null;
            }
@@ -62,24 +66,95 @@ public class PrestamoService {
         
        
            
-       } 
-      public Prestamo buscarPrestamo(long documento){
+       }
+      public List<Prestamo> buscarPrestamo(long documento) throws Exception{
           try {
-              return dao.buscarprestamosDNI(documento);
-          } catch (Exception e) {
+              List <Prestamo> prestamos = dao.buscarprestamosDNI(documento);
+                  if(prestamos == null){
+                      System.out.println("Lista Invalida"); 
+                  }
+                  for (Prestamo prestamo : prestamos) {
+                      System.out.println("---------------------------------------------");
+                      System.out.println("Cliente: " + prestamo.getCliente().getNombre() + " " + prestamo.getCliente().getTelefono());
+                      System.out.println(prestamo.getLibro().getTitle());
+                      System.out.println("----------------------------------------------");
+              }
+             return prestamos;     
+          } catch (NoResultException e) {
               return null;
           }
     }
-      public boolean verif(long documento, String titulo){
-          boolean vbl = false;
-          if(buscarPrestamo(documento) != null){
-              vbl = true;
-          }else{
-              return vbl;
-          }
-          if (buscarPrestamo(documento).getLibro().getTitle().equalsIgnoreCase(titulo) ){
-              vbl = true;
-          }
-          return vbl;
-      }
+      
+      public Libro devolucionEjemplar(long documento){
+          setServicios(libroservice, clienteservice);
+        try {
+            List <Prestamo> prestamos = buscarPrestamo(documento);
+            if(prestamos == null){
+                System.out.println("Lista Inexistente o incorrecta");
+                return null;
+            }
+       
+         System.out.println("Seleccione el titulo que desea devolver: "); 
+         Scanner sc = new Scanner (System.in);
+         String resp = sc.nextLine();
+            System.out.println(resp);
+         eliminarPrestamo(prestamos, resp);
+         Libro libro = libroservice.busquedaporTitulo(resp);
+            if(libro.getEjemplaresPrestados() > 0){
+                libro.setEjemplaresPrestados(libro.getEjemplaresPrestados()-1);
+                libro.setEjemplares(libro.getEjemplares()+1);
+                libro.setEjemplaresRestantes(libro.getEjemplaresRestantes()+1);
+                System.out.println("Libro devuelto");
+            }else{
+                System.out.println("Ese libro no fue prestado");
+            }
+            libroservice.guardarCambios(libro);
+            return libro;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+      public int verif(long documento, String titulo) throws Exception {
+    int vbl = 0;
+    List <Prestamo> prestamos = buscarPrestamo(documento);
+
+    if (prestamos != null) {
+        vbl += 1; // Increment vbl if a préstamo is found
+        
+        for (Prestamo prestamo : prestamos) {
+            Libro libro = prestamo.getLibro();
+            if (libro != null && libro.getTitle().equalsIgnoreCase(titulo)) {
+            vbl += 1; // Increment vbl if the libro title matches
+        } else {
+            System.out.println("El cliente no tiene el libro '" + titulo + "' en préstamo.");
+        }
+    } 
+    }else {
+        System.out.println("El cliente no tiene libros en prestamo.");
+    }
+        return vbl;
+        }
+   public void eliminarPrestamo(List <Prestamo> prestamo, String title) throws Exception{
+        try {
+            for (Prestamo prestamo1 : prestamo) {
+               if(prestamo1.getLibro().getTitle().equals(title)){
+                   dao.eliminar(prestamo1);
+                   System.out.println("Prestamo eliminado");
+                   return;
+               } 
+            }       
+            throw new NoResultException ("No se encontro el prestamo apra el libro con el titulo " + title);
+        } catch (NoResultException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Ocurrio un error al eliminar el prestamo");
+        }
+    }  
+  
+    
+
 }
+
