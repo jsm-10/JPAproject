@@ -97,7 +97,6 @@ public class PrestamoService {
          System.out.println("Seleccione el titulo que desea devolver: "); 
          Scanner sc = new Scanner (System.in);
          String resp = sc.nextLine();
-            System.out.println(resp);
          eliminarPrestamo(prestamos, resp);
          Libro libro = libroservice.busquedaporTitulo(resp);
             if(libro.getEjemplaresPrestados() > 0){
